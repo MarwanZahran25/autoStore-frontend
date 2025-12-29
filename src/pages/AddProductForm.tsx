@@ -1,15 +1,223 @@
-import { type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import * as z from "zod";
-import { formSchema } from "../lib/schema";
-import { useForm } from "react-hook-form";
+import axios from "axios";
+import { formSchema, brandAndSupplierSchema } from "../lib/schema";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import FieldInput from "@/components/FieldInput";
+import SelectField from "@/components/SelectField";
+import CheckboxWithInput from "@/components/CheckboxWithInput";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Spinner } from "@/components/ui/spinner";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  fromFieldsArray,
+  supplierInfofields,
+  backendServer,
+  printerServer,
+} from "../myConfig";
+import { Datepicker } from "@/components/Datepicker";
+import { Field } from "@/components/ui/field";
+
+const formFields = fromFieldsArray;
+type FormType = z.infer<typeof formSchema>;
+const newSupplierVal = "-1";
+const newBrandVal = "new";
 export default function AddProductForm(): ReactNode {
-  type FormType = z.infer<typeof formSchema>;
+  const [supplierFields, setSupplierFields] = useState(false);
+
+  async function formSubmit(d: FormType) {
+    await axios.post(`${backendServer}/product/add`, d);
+
+    return d;
+  }
+
+  const queryClient = useQueryClient();
   const form = useForm<FormType>({
     resolver: zodResolver(formSchema),
-    defaultValues: {},
+    defaultValues: {
+      purchaseDate: "",
+      purchasePrice: "",
+      description: "",
+      copies: "",
+      toPrint: false,
+      newBrand: "",
+    },
+    mode: "onBlur",
   });
+
+  const { isPending, error, data } = useQuery({
+    queryKey: ["suppliersAndBrands"],
+    queryFn: async () => {
+      const res = await axios.get(`${backendServer}/product/brandsInfo`);
+      return brandAndSupplierSchema.parse(res.data);
+    },
+  });
+
+  const mutation = useMutation({
+    mutationFn: formSubmit,
+    onSuccess: async (d: FormType) => {
+      if (d.brand === newBrandVal || d.supplierID == newSupplierVal) {
+        await queryClient.invalidateQueries({
+          queryKey: ["suppliersAndBrands"],
+        });
+      }
+      toast.success(
+        `product : (${d.productName}) has been added to the Database Successfuly`
+      );
+      form.reset();
+      if (d.toPrint) {
+        try {
+          await axios.post(`${printerServer}/print`, {
+            id: d.productId,
+            price: d.sellingPrice,
+            name: d.productName,
+          });
+          toast.success(`${d.copies} copy sent to the printer`);
+        } catch {
+          toast.error("couldn't print the barcodes please try again latter");
+        }
+      }
+    },
+    onError: (e) => {
+      toast.error("this product couldnt be added now please try again");
+      console.log(e);
+    },
+  });
+
+  function onSubmit(d: FormType) {
+    mutation.mutate(d);
+  }
+
+  const brand = useWatch({ control: form.control, name: "brand" });
+  const supplier = useWatch({ control: form.control, name: "supplierID" });
+
   return (
-    <div className="w-screen flex justify-center items-center h-screen"></div>
+    <div className="w-screen flex justify-center items-center h-screen ">
+      <Card className="w-[800px]">
+        <CardHeader>
+          <CardTitle>Add a new product</CardTitle>
+          <CardDescription>
+            fill in the product details to add to the product Database
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form
+            className="grid lg:grid-cols-2 gap-4 grid-cols-1"
+            onSubmit={form.handleSubmit(onSubmit)}
+            id="add-product-form"
+          >
+            {formFields.map((f) => {
+              return (
+                <FieldInput
+                  key={f.name}
+                  name={f.name}
+                  placeholder={f.placeholder}
+                  type={f.type}
+                  fieldType={f.fieldType}
+                  control={form.control}
+                  label={f.label}
+                />
+              );
+            })}
+            <SelectField
+              type={"brand"}
+              values={data?.brand || []}
+              name="brand"
+              placeholder="Select a brand"
+              control={form.control}
+              label="Brand"
+              pending={isPending || error != null}
+            />
+            {brand === newBrandVal && (
+              <FieldInput
+                name="newBrand"
+                label="Name of the new brand"
+                fieldType="input"
+                control={form.control}
+              />
+            )}
+            <CheckboxWithInput control={form.control} />
+            <Button
+              variant="link"
+              type="button"
+              className="col-start-1 max-w-35 text-md col-span-2"
+              onClick={() => setSupplierFields((cur) => !cur)}
+              aria-expanded={supplierFields}
+            >
+              + Add Supplier info
+            </Button>
+
+            {supplierFields && (
+              <>
+                <SelectField
+                  type={"supplier"}
+                  values={data?.supplier || []}
+                  name="supplierID"
+                  control={form.control}
+                  label="Supplier"
+                  placeholder="Select supplier"
+                  pending={isPending || error != null}
+                />
+                {supplier === newSupplierVal && (
+                  <FieldInput
+                    name="newSupplier"
+                    label="Name of the new supplier"
+                    fieldType="input"
+                    control={form.control}
+                  />
+                )}
+                {supplierInfofields.map((f) => {
+                  return (
+                    <FieldInput
+                      key={f.name}
+                      name={f.name}
+                      placeholder={f.placeholder}
+                      type={f.type}
+                      fieldType={f.fieldType}
+                      control={form.control}
+                      label={f.label}
+                    />
+                  );
+                })}
+                <Datepicker
+                  control={form.control}
+                  name="purchaseDate"
+                  label="purchase Date"
+                />
+              </>
+            )}
+          </form>
+        </CardContent>
+        <CardFooter>
+          <Field orientation={"horizontal"}>
+            <Button
+              type="button"
+              variant={"outline"}
+              onClick={() => form.reset()}
+            >
+              Reset
+            </Button>
+            <Button
+              type="submit"
+              form="add-product-form"
+              disabled={mutation.isPending}
+            >
+              {!mutation.isPending && "Submit"}
+              {mutation.isPending && <Spinner />}
+            </Button>
+          </Field>
+        </CardFooter>
+      </Card>
+    </div>
   );
 }
