@@ -4,10 +4,10 @@ import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Checkbox } from "./ui/checkbox";
 import * as z from "zod";
-import { formSchema } from "@/lib/schema";
+import { formSchema, purchaseSchema } from "@/lib/schema";
 
 export type FieldInputProps = {
-  name: keyof z.infer<typeof formSchema>;
+  name: keyof z.infer<typeof formSchema> | keyof z.infer<typeof purchaseSchema>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control: any;
   placeholder?: string;
@@ -16,6 +16,7 @@ export type FieldInputProps = {
   fieldType: "input" | "textarea" | "checkbox";
   width?: number;
   className?: string;
+  disabled?: boolean;
 };
 export default function FieldInput({
   name,
@@ -26,6 +27,7 @@ export default function FieldInput({
   fieldType,
   width,
   className,
+  disabled,
 }: FieldInputProps) {
   return (
     <Controller
@@ -44,6 +46,7 @@ export default function FieldInput({
               autoComplete="off"
               type={type}
               value={field.value || ""}
+              disabled={disabled}
             />
           )}
           {fieldType === "textarea" && (

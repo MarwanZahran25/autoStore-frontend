@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from "react";
 import * as z from "zod";
 import axios from "axios";
+import { api } from "../lib/api";
 import { formSchema, brandAndSupplierSchema } from "../lib/schema";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,28 +23,26 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   fromFieldsArray,
   supplierInfofields,
-  backendServer,
   printerServer,
+  backendServer,
 } from "../myConfig";
 import { Datepicker } from "@/components/Datepicker";
 import { Field } from "@/components/ui/field";
 
 const formFields = fromFieldsArray;
 type FormType = z.infer<typeof formSchema>;
-const newSupplierVal = "-1";
+const newSupplierVal = -1;
 const newBrandVal = "new";
 export default function AddProductForm(): ReactNode {
   const [supplierFields, setSupplierFields] = useState(false);
-
   async function formSubmit(d: FormType) {
-    await axios.post(`${backendServer}/product/add`, d);
-
+    await api.post(`${backendServer}/product/add`, d);
     return d;
   }
-
   const queryClient = useQueryClient();
   const form = useForm<FormType>({
-    resolver: zodResolver(formSchema),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    resolver: zodResolver(formSchema) as any,
     defaultValues: {
       purchaseDate: "",
       purchasePrice: "",
@@ -54,11 +53,10 @@ export default function AddProductForm(): ReactNode {
     },
     mode: "onBlur",
   });
-
   const { isPending, error, data } = useQuery({
     queryKey: ["suppliersAndBrands"],
     queryFn: async () => {
-      const res = await axios.get(`${backendServer}/product/brandsInfo`);
+      const res = await api.get("/product/brandsInfo");
       return brandAndSupplierSchema.parse(res.data);
     },
   });
@@ -68,11 +66,11 @@ export default function AddProductForm(): ReactNode {
     onSuccess: async (d: FormType) => {
       if (d.brand === newBrandVal || d.supplierID == newSupplierVal) {
         await queryClient.invalidateQueries({
-          queryKey: ["suppliersAndBrands"],
+          queryKey: ["suppliersAndBrands", "products"],
         });
       }
       toast.success(
-        `product : (${d.productName}) has been added to the Database Successfuly`
+        `product : (${d.productName}) has been added to the Database Successfully`
       );
       form.reset();
       if (d.toPrint) {
@@ -84,7 +82,7 @@ export default function AddProductForm(): ReactNode {
           });
           toast.success(`${d.copies} copy sent to the printer`);
         } catch {
-          toast.error("couldn't print the barcodes please try again latter");
+          toast.error("couldn't print the barcodes please try again later");
         }
       }
     },
@@ -102,7 +100,7 @@ export default function AddProductForm(): ReactNode {
   const supplier = useWatch({ control: form.control, name: "supplierID" });
 
   return (
-    <div className="w-screen flex justify-center items-center h-screen ">
+    <div className="  p-6 flex justify-center items-start min-h-screen ">
       <Card className="w-[800px]">
         <CardHeader>
           <CardTitle>Add a new product</CardTitle>
@@ -138,14 +136,16 @@ export default function AddProductForm(): ReactNode {
               label="Brand"
               pending={isPending || error != null}
             />
-            {brand === newBrandVal && (
-              <FieldInput
-                name="newBrand"
-                label="Name of the new brand"
-                fieldType="input"
-                control={form.control}
-              />
-            )}
+
+            <FieldInput
+              name="newBrand"
+              label="Brand name"
+              fieldType="input"
+              control={form.control}
+              disabled={brand !== newBrandVal}
+              placeholder="New brand name"
+            />
+
             <CheckboxWithInput control={form.control} />
             <Button
               variant="link"
@@ -168,14 +168,16 @@ export default function AddProductForm(): ReactNode {
                   placeholder="Select supplier"
                   pending={isPending || error != null}
                 />
-                {supplier === newSupplierVal && (
-                  <FieldInput
-                    name="newSupplier"
-                    label="Name of the new supplier"
-                    fieldType="input"
-                    control={form.control}
-                  />
-                )}
+
+                <FieldInput
+                  name="newSupplier"
+                  label="Supplier Name"
+                  fieldType="input"
+                  control={form.control}
+                  disabled={supplier != -1}
+                  placeholder="New supplier Name"
+                />
+
                 {supplierInfofields.map((f) => {
                   return (
                     <FieldInput

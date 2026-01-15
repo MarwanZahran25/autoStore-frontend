@@ -17,11 +17,13 @@ export function Datepicker({
   control,
   label,
   placeholder,
+  className,
 }: {
   name: string;
   control: any;
   label: string;
   placeholder?: string;
+  className?: string;
 }) {
   return (
     <Controller
@@ -36,14 +38,14 @@ export function Datepicker({
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
-                id={name} // Use name for unique ID
-                ref={field.ref} // Attach ref for focus management
+                id={name}
+                ref={field.ref}
                 className={cn(
                   "w-48 justify-between font-normal",
-                  !field.value && "text-muted-foreground"
+                  !field.value && "text-muted-foreground",
+                  className
                 )}
               >
-                {/* FIX: Format the date object so React can render it */}
                 {field.value ? (
                   format(field.value, "PPP")
                 ) : (
@@ -57,7 +59,9 @@ export function Datepicker({
                 mode="single"
                 selected={field.value}
                 onSelect={field.onChange}
-                disabled={(date) => date < new Date("1900-01-01")}
+                disabled={(date) =>
+                  date < new Date("1900-01-01") || date > new Date()
+                }
               />
             </PopoverContent>
           </Popover>

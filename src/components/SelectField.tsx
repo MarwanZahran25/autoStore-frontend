@@ -9,8 +9,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import * as z from "zod";
+import { purchaseSchema } from "@/lib/schema";
 export type selectFieldProps = {
-  name: fieldName;
+  name: fieldName | keyof z.infer<typeof purchaseSchema>;
   values: supplier[];
   placeholder: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -18,6 +20,7 @@ export type selectFieldProps = {
   label: string;
   type: "brand" | "supplier";
   pending: boolean;
+  className?: string;
 };
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 type supplier = { id?: number; name: string };
@@ -29,6 +32,7 @@ export default function SelectField({
   label,
   type,
   pending,
+  className,
 }: selectFieldProps) {
   return (
     <Controller
@@ -39,7 +43,7 @@ export default function SelectField({
           <FieldLabel htmlFor={name}>{label}</FieldLabel>
           <Select value={field.value || ""} onValueChange={field.onChange}>
             <SelectTrigger
-              className="w-[180px]"
+              className={className}
               id={name}
               aria-invalid={fieldState.invalid}
               disabled={pending}
@@ -49,13 +53,13 @@ export default function SelectField({
             <SelectContent>
               <SelectGroup>
                 <SelectLabel>{placeholder}</SelectLabel>
-                {values.map((elment) => {
+                {values.map((element) => {
                   return (
                     <SelectItem
-                      value={type === "brand" ? elment.name : String(elment.id)}
-                      key={elment.name}
+                      value={type === "brand" ? element.name : String(element.id)}
+                      key={element.name}
                     >
-                      {elment.name}
+                      {element.name}
                     </SelectItem>
                   );
                 })}

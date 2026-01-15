@@ -16,16 +16,16 @@ export default function CheckboxWithInput({ control }: { control: any }) {
         control={control}
         className="max-w-20"
       />
-      {toPrint && (
-        <FieldInput
-          label="Copies"
-          name="copies"
-          placeholder="copies"
-          fieldType="input"
-          control={control}
-          width={70}
-        />
-      )}
+
+      <FieldInput
+        label="Copies"
+        name="copies"
+        placeholder="copies"
+        fieldType="input"
+        control={control}
+        width={70}
+        disabled={!toPrint}
+      />
     </div>
   );
 }
