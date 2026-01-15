@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import axios from "axios";
+import { api } from "@/lib/api";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import logo from "../assets/logo.png";
@@ -26,7 +26,7 @@ export default function SignInPage() {
     setError(false);
     setLoading(true);
     try {
-      const response = await axios.post(`${backendServer}/auth/login`, {
+      const response = await api.post(`${backendServer}/auth/login`, {
         password,
       });
       const { token } = response.data;
@@ -63,7 +63,9 @@ export default function SignInPage() {
               aria-invalid={error}
               disabled={loading}
             />
-            <FieldError errors={error ? [{ message: "Password is required" }] : []} />
+            <FieldError
+              errors={error ? [{ message: "Password is required" }] : []}
+            />
           </Field>
           <Button type="submit" className="w-full" disabled={loading}>
             {loading ? (

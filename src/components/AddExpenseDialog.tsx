@@ -9,11 +9,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { api } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Minus } from "lucide-react";
-import axios from "axios";
+
 import { backendServer } from "@/myConfig";
 import { toast } from "sonner";
 import { Datepicker } from "@/components/Datepicker";
@@ -39,9 +40,9 @@ export default function AddExpenseDialog(): ReactNode {
       const reqObj = {
         name: data.name,
         pricePerUnit: parseInt(data.amount) * -1,
-        time: data.time
+        time: data.time,
       };
-      await axios.post(`${backendServer}/transaction/add`, reqObj);
+      await api.post(`${backendServer}/transaction/add`, reqObj);
       toast.success("expense added sucssefuly");
       form.reset();
       setOpen(false);

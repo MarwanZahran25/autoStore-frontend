@@ -1,7 +1,6 @@
 import { type ReactNode, useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { backendServer } from "@/myConfig";
 import { productDataAndpurchase } from "@/lib/schema";
 import ProductHeaderCard from "@/components/ProductHeaderCard";
@@ -12,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { ScanLine, Keyboard, ShoppingCart, X, Receipt } from "lucide-react";
+import { api } from "@/lib/api";
 
 export default function MainPage(): ReactNode {
   const navigate = useNavigate();
@@ -33,7 +33,7 @@ export default function MainPage(): ReactNode {
   const { data, error } = useQuery({
     queryFn: async () => {
       if (!searchId) return null;
-      const res = await axios.get(`${backendServer}/product/${searchId}`);
+      const res = await api.get(`${backendServer}/product/${searchId}`);
 
       // Validate the response data
       if (res.status !== 200) {

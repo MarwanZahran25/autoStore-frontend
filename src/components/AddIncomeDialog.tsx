@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Plus } from "lucide-react";
-import axios from "axios";
+import { api } from "@/lib/api";
 import { backendServer } from "@/myConfig";
 import { toast } from "sonner";
 import { Datepicker } from "@/components/Datepicker";
@@ -39,9 +39,9 @@ export default function AddIncomeDialog(): ReactNode {
       const reqObj = {
         name: data.name,
         pricePerUnit: data.amount,
-        time: data.time
+        time: data.time,
       };
-      await axios.post(`${backendServer}/transaction/add`, reqObj);
+      await api.post(`${backendServer}/transaction/add`, reqObj);
       toast.success("income added sucssefuly");
       form.reset();
       setOpen(false);
@@ -69,9 +69,7 @@ export default function AddIncomeDialog(): ReactNode {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Add Income</DialogTitle>
-          <DialogDescription>
-            Enter the income details below.
-          </DialogDescription>
+          <DialogDescription>Enter the income details below.</DialogDescription>
         </DialogHeader>
         <form onSubmit={form.handleSubmit(handleSubmit)}>
           <div className="space-y-4 py-4">
