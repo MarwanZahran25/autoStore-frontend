@@ -13,7 +13,7 @@ import SelectField from "./SelectField";
 import FieldInput from "./FieldInput";
 import { purchaseSchema, brandAndSupplierSchema } from "@/lib/schema";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+
 import { backendServer } from "@/myConfig";
 import { Button } from "./ui/button";
 import { Datepicker } from "./Datepicker";
