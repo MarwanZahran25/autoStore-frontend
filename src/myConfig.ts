@@ -1,6 +1,7 @@
 import type { FieldInputProps } from "./components/FieldInput";
 
-export const backendServer = "http://localhost:8080";
+export const backendServer =
+  "https://comparable-lorraine-marwanzahran25-756487f1.koyeb.app";
 type formFields = Omit<FieldInputProps, "control">;
 
 export const fromFieldsArray: formFields[] = [

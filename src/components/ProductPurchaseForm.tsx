@@ -18,6 +18,7 @@ import { backendServer } from "@/myConfig";
 import { Button } from "./ui/button";
 import { Datepicker } from "./Datepicker";
 import { Field } from "./ui/field";
+import { api } from "@/lib/api";
 export default function PurchaseForm({ productId }: { productId: number }) {
   const form = useForm<z.infer<typeof purchaseSchema>>({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -34,7 +35,7 @@ export default function PurchaseForm({ productId }: { productId: number }) {
   const { data, isPending } = useQuery({
     queryKey: ["suppliersAndBrands"],
     queryFn: async () => {
-      const res = await axios.get(`${backendServer}/product/brandsInfo`);
+      const res = await api.get(`${backendServer}/product/brandsInfo`);
       const parseRes = brandAndSupplierSchema.safeParse(res.data);
       if (parseRes.success) {
         return parseRes.data;
@@ -47,7 +48,7 @@ export default function PurchaseForm({ productId }: { productId: number }) {
   async function onSubmit(data: z.infer<typeof purchaseSchema>) {
     const newData = { ...data, productId };
     console.log(newData);
-    await axios.post(`${backendServer}/qty/add`, { newData });
+    await api.post(`${backendServer}/qty/add`, { newData });
   }
 
   return (
