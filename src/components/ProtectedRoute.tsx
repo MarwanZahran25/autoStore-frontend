@@ -1,36 +1,32 @@
-import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router";
 import { api } from "../lib/api";
 import { Loader2 } from "lucide-react";
 import { useAuthStore } from "../store";
+import { useQuery } from "@tanstack/react-query";
+import { backendServer } from "@/myConfig";
 
 export default function ProtectedRoute() {
-  const token = useAuthStore((state) => state.token);
-  const clearToken = useAuthStore((state) => state.clearToken);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isValid, setIsValid] = useState(false);
-
-  useEffect(() => {
-    const verifyToken = async () => {
-      if (!token) {
-        setIsLoading(false);
-        return;
-      }
-
+  const { token, clearToken } = useAuthStore();
+  const { data, isPending, error } = useQuery({
+    queryFn: async () => {
       try {
-        await api.get("/auth/verify");
-        setIsValid(true);
-      } catch {
+        const res = await api.post(`${backendServer}/auth/verify`);
+        return res.data;
+      } catch (e) {
         clearToken();
-      } finally {
-        setIsLoading(false);
+        throw e;
       }
-    };
+    },
+    queryKey: [`validity`, token],
+    enabled: !!token,
+    retry: false,
+    staleTime: 1000 * 60 * 60,
+  });
+  if (error || !token) {
+    return <Navigate to="/login" replace />;
+  }
 
-    verifyToken();
-  }, [token, clearToken]);
-
-  if (isLoading) {
+  if (isPending) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -38,9 +34,7 @@ export default function ProtectedRoute() {
     );
   }
 
-  if (!isValid || !token) {
-    return <Navigate to="/login" replace />;
+  if (data) {
+    return <Outlet />;
   }
-
-  return <Outlet />;
 }
