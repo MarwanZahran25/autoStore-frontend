@@ -10,7 +10,7 @@ export default function ProtectedRoute() {
   const { data, isPending, error } = useQuery({
     queryFn: async () => {
       try {
-        const res = await api.post(`${backendServer}/auth/verify`);
+        const res = await api.get(`${backendServer}/auth/verify`);
         return res.data;
       } catch (e) {
         clearToken();
