@@ -13,5 +13,14 @@ api.interceptors.request.use((config) => {
   }
   return config;
 });
+api.interceptors.response.use(
+  (res) => res,
+  (err) => {
+    if (err.status == 401) {
+      useAuthStore.getState().clearToken();
+    }
+    return Promise.reject(err);
+  },
+);
 
 export { api };
