@@ -28,10 +28,10 @@ export default function ReceiptPage(): ReactNode {
   const [sellingPrice, setSellingPrice] = useState(0);
   const { products, addEntry, resetRecipt } = useReciptStore();
 
-   const fetchProduct = async (id: string) => {
-     try {
-       const response = await api.get(`/product/${id}`);
-       const validatedProduct = productDataAndpurchase.parse(response.data);
+  const fetchProduct = async (id: string) => {
+    try {
+      const response = await api.get(`/product/${id}`);
+      const validatedProduct = productDataAndpurchase.parse(response.data);
       setCurrentProduct(validatedProduct);
       setSellingPrice(validatedProduct.productInfo.sellingPrice);
       setQuantity(1);
@@ -115,7 +115,7 @@ export default function ReceiptPage(): ReactNode {
                           <p className="text-xs text-slate-500">
                             Purchase Price: QAR{" "}
                             {currentProduct.purchaseInfo[0].purchase.price?.toFixed(
-                              2
+                              2,
                             ) || "N/A"}
                           </p>
                         )}
@@ -168,10 +168,7 @@ export default function ReceiptPage(): ReactNode {
 
               <div className="space-y-2">
                 {products.map((entry, index) => {
-                  if (
-                    entry.productId !== undefined &&
-                    entry.quantity !== undefined
-                  ) {
+                  if (entry.productId !== undefined) {
                     return (
                       <ReceiptProductCard
                         key={index}
@@ -179,7 +176,7 @@ export default function ReceiptPage(): ReactNode {
                         name={entry.name!}
                         brand={entry.brand!}
                         price={entry.pricePerUnit!}
-                        quantity={entry.quantity}
+                        quantity={entry.quantity || 1}
                       />
                     );
                   } else {
@@ -236,15 +233,15 @@ export default function ReceiptPage(): ReactNode {
                     <Trash2 className="h-4 w-4 mr-2" />
                     Clear
                   </Button>
-                   <Button
-                     className="flex-1"
-                     onClick={async () => {
-                       const res = await api.post("/receipt/add", {
-                         transactions: products,
-                       });
-                       console.log(res.data);
-                       resetRecipt();
-                     }}
+                  <Button
+                    className="flex-1"
+                    onClick={async () => {
+                      const res = await api.post("/receipt/add", {
+                        transactions: products,
+                      });
+                      console.log(res.data);
+                      resetRecipt();
+                    }}
                   >
                     Checkout
                   </Button>

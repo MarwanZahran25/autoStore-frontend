@@ -4,8 +4,15 @@ import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Menu, Package, Receipt, ArrowRightLeft, Home, Plus } from "lucide-react";
-import logo from "@/assets/logo.png";
+import {
+  Menu,
+  Package,
+  Receipt,
+  ArrowRightLeft,
+  Home,
+  Plus,
+} from "lucide-react";
+import logo from "@/assets/logo.webp";
 
 const navItems = [
   {
@@ -19,8 +26,8 @@ const navItems = [
     icon: Package,
   },
   {
-    title: "Receipt",
-    href: "/receipt",
+    title: "Receipts",
+    href: "/receipts/all",
     icon: Receipt,
   },
   {
@@ -54,7 +61,7 @@ export function Sidebar() {
                     "flex items-center gap-3 rounded-lg px-3 py-3 text-base font-medium transition-colors",
                     isActive
                       ? "bg-slate-900 text-slate-50"
-                      : "text-slate-700 hover:bg-slate-100"
+                      : "text-slate-700 hover:bg-slate-100",
                   )}
                 >
                   <Icon className="h-6 w-6" />
@@ -85,8 +92,9 @@ export function Sidebar() {
         </SheetTrigger>
         <SheetContent side="left" className="w-64 p-0">
           <div className="flex h-full flex-col">
-            <div className="p-6 border-b flex justify-center">
-              <img src={logo} alt="Logo" className="h-16 w-auto" />
+            <div className="p-6 border-b flex justify-center h-100">
+              hi
+              {<img src={logo} alt="Logo" className="h-16 w-auto" />}
             </div>
             <ScrollArea className="flex-1 pb-8">
               <nav className="flex flex-col gap-1 p-2">
@@ -102,7 +110,7 @@ export function Sidebar() {
                         "flex items-center gap-3 rounded-lg px-3 py-3 text-base font-medium transition-colors",
                         isActive
                           ? "bg-slate-900 text-slate-50"
-                          : "text-slate-700 hover:bg-slate-100"
+                          : "text-slate-700 hover:bg-slate-100",
                       )}
                     >
                       <Icon className="h-6 w-6" />

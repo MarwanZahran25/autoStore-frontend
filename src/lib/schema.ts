@@ -31,13 +31,13 @@ export const brandAndSupplierSchema = z.object({
     z.object({
       name: z.string(),
       id: z.number(),
-    })
+    }),
   ),
   supplier: z.array(
     z.object({
       name: z.string(),
       id: z.number(),
-    })
+    }),
   ),
 });
 export const productRes = z.array(
@@ -45,9 +45,19 @@ export const productRes = z.array(
     id: z.number(),
     name: z.string(),
     qty: z.number(),
-    price: z.number(), 
-  })
+    price: z.number(),
+  }),
 );
+export const transactionRes = z.object({
+  id: z.number().optional(),
+  receiptId: z.number().nullish(),
+  productId: z.number().nullish(),
+  pricePerUnit: z.number(),
+  quantity: z.number().nullish().default(1),
+  name: z.string(),
+  time: z.string(),
+});
+
 export const productDataAndpurchase = z.object({
   productInfo: z.object({
     id: z.number(),
@@ -74,7 +84,7 @@ export const productDataAndpurchase = z.object({
           name: z.string(),
         })
         .nullable(),
-    })
+    }),
   ),
 });
 export const purchaseSchema = z.object({

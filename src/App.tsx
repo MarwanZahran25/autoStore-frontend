@@ -5,7 +5,7 @@ import AddProductForm from "./pages/AddProductForm";
 import ProudctsList from "./pages/productsList";
 import ProductPage from "./pages/productPage";
 import MainPage from "./pages/MainPage";
-import ReceiptPage from "./pages/ReceiptPage";
+import ReceiptsPage from "./pages/ReceiptPage";
 import TransactionsPage from "./pages/TransactionsPage";
 import SignInPage from "./pages/SignInPage";
 import { Toaster } from "sonner";
@@ -24,8 +24,9 @@ export default function App() {
             <Route path="products/add" element={<AddProductForm />} />
             <Route path="products/all" element={<ProudctsList />} />
             <Route path="product/:id" element={<ProductPage />} />
-            <Route path="receipt" element={<ReceiptPage />} />
+
             <Route path="transactions/all" element={<TransactionsPage />} />
+            <Route path="receipt/new" element={<ReceiptsPage />} />
           </Route>
         </Route>
       </Routes>

@@ -141,7 +141,7 @@ export default function MainPage(): ReactNode {
           <AddExpenseDialog />
           <Button
             variant="outline"
-            onClick={() => navigate("/receipt")}
+            onClick={() => navigate("/receipt/new")}
             className="h-auto md:h-14"
           >
             <Receipt className="h-4 w-4 mr-2" />
