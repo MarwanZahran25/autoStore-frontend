@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Menu, Package, Receipt, ShoppingCart, Home, Plus } from "lucide-react";
+import { Menu, Package, Receipt, ArrowRightLeft, Home, Plus } from "lucide-react";
 import logo from "@/assets/logo.png";
 
 const navItems = [
@@ -26,7 +26,7 @@ const navItems = [
   {
     title: "Transactions",
     href: "/transactions/all",
-    icon: ShoppingCart,
+    icon: ArrowRightLeft,
   },
 ];
 

@@ -1,12 +1,79 @@
 import { type ReactNode } from "react";
 import { api } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
-import { type ColumnDef } from "@tanstack/react-table";
 import { productRes } from "@/lib/schema";
-import { DataTable } from "../components/datatable";
-import { Link } from "react-router";
+import { ProductsDataTable } from "../components/products-data-table";
 import { Button } from "@/components/ui/button";
-import { ArrowUpDown } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardFooter,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+} from "@/components/ui/table";
+import { Input } from "@/components/ui/input";
+
+function ProductListSkeleton(): ReactNode {
+  return (
+    <Card className="w-full capitalize">
+      <CardHeader>
+        <CardTitle>Product List</CardTitle>
+        <CardDescription>List of all avalible products</CardDescription>
+        <div className="flex items-center py-2">
+          <Input
+            placeholder="Filter by product name"
+            className="max-w-sm"
+            disabled
+          />
+        </div>
+      </CardHeader>
+
+      <CardContent>
+        <div className="overflow-hidden rounded-md border">
+          <Table>
+            <TableBody>
+              {Array.from({ length: 10 }, (_, i) => (
+                <TableRow key={`skeleton-${i}`}>
+                  <TableCell className="hidden lg:block">
+                    <div className="h-4 w-8 bg-gray-200 animate-pulse rounded"></div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="h-4 w-32 bg-gray-200 animate-pulse rounded"></div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="h-4 w-20 bg-gray-200 animate-pulse rounded"></div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="h-4 w-12 bg-gray-200 animate-pulse rounded"></div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </CardContent>
+
+      <CardFooter>
+        <div className="flex items-center justify-end space-x-2 w-full">
+          <Button variant="outline" size="sm" disabled>
+            Previous
+          </Button>
+          <Button variant="default" size="sm" disabled>
+            Next
+          </Button>
+        </div>
+      </CardFooter>
+    </Card>
+  );
+}
+
 export default function ProductsPage(): ReactNode {
   const { data, isPending } = useQuery({
     queryKey: ["products"],
@@ -14,92 +81,21 @@ export default function ProductsPage(): ReactNode {
       const res = await api.get("/product/all");
       return res.data;
     },
+    staleTime: 1000 * 60 * 10,
   });
-  type product = {
-    id: number;
-    name: string;
-    qty: number;
-    price: number;
-  };
-
   const parseResult = productRes.safeParse(data);
-  const columns: ColumnDef<product>[] = [
-    {
-      accessorKey: "id",
-      header: () => <div className=" hidden lg:block">ID</div>,
-      cell: ({ row }) => {
-        return (
-          <div className=" font-medium hidden lg:block">
-            {row.getValue("id")}
-          </div>
-        );
-      },
-    },
-    {
-      accessorKey: "name",
-      header: () => <div className="">Name</div>,
-      cell: ({ row }) => {
-        const productId: number = row.getValue("id");
-        return (
-          <Link to={`/product/${productId}`}>
-            <div className=" font-medium text-xsm lg:text-md">
-              {row.getValue("name")}
-            </div>
-          </Link>
-        );
-      },
-    },
-    {
-      accessorKey: "price",
-      header: () => <div className="">Selling Price</div>,
-      cell: ({ row }) => {
-        return <div className=" font-medium">{row.getValue("price")}</div>;
-      },
-    },
-    {
-      accessorKey: "qty",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-            className=" justify-end"
-          >
-            QTY
-            <ArrowUpDown className="ml-2 h-2 w-2" />
-          </Button>
-        );
-      },
-      cell: ({ row }) => {
-        const qty: number = row.getValue("qty");
-        return (
-          <div
-            className={` font-medium px-2 ${
-              qty < 5 ? "text-red-500" : "text-black"
-            }`}
-          >
-            {qty}
-          </div>
-        );
-      },
-    },
-  ];
-  if (!parseResult.success) {
+
+  if (!parseResult.success && !isPending) {
     console.log(data);
     return <div>Cant load this page</div>;
   }
-  if (isPending) {
-    return <div>Loading...</div>;
-  }
   return (
     <div className="max-w-[800px] mx-auto py-10">
-      <DataTable
-        columns={columns}
-        data={data}
-        Description="List of all avalible products"
-        title="Product List"
-        input={true}
-      />
+      {isPending ? (
+        <ProductListSkeleton />
+      ) : (
+        <ProductsDataTable data={data} />
+      )}
     </div>
   );
 }
