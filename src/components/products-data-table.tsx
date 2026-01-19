@@ -17,9 +17,7 @@ const columns: ColumnDef<product>[] = [
     header: () => <div className=" hidden lg:block">ID</div>,
     cell: ({ row }) => {
       return (
-        <div className=" font-medium hidden lg:block">
-          {row.getValue("id")}
-        </div>
+        <div className=" font-medium hidden lg:block">{row.getValue("id")}</div>
       );
     },
   },
@@ -51,7 +49,7 @@ const columns: ColumnDef<product>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className=" justify-end"
+          className="text-left justify-end"
         >
           QTY
           <ArrowUpDown className="ml-2 h-2 w-2" />

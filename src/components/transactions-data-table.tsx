@@ -67,10 +67,10 @@ const columns: ColumnDef<transaction>[] = [
       return (
         <div
           className={`font-medium px-2 w-16 text-left ${
-            price < 0 ? "text-red-500" : "text-black"
+            price < 0 ? "text-red-500" : "text-green-500"
           }`}
         >
-          {price}
+          {price < 0 ? price : `+${price}`}
         </div>
       );
     },
@@ -82,7 +82,7 @@ const columns: ColumnDef<transaction>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="justify-start"
+          className="justify-start text-left"
         >
           Quantity
           <ArrowUpDown className="ml-2 h-2 w-2" />
@@ -91,7 +91,7 @@ const columns: ColumnDef<transaction>[] = [
     },
     cell: ({ row }) => {
       return (
-        <div className="font-medium w-12 text-left">
+        <div className="font-medium w-12 text-center">
           {row.getValue("quantity")}
         </div>
       );
