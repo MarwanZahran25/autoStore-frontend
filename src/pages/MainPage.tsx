@@ -1,4 +1,4 @@
-import { type ReactNode, useState, useEffect } from "react";
+import { type ReactNode, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { backendServer } from "@/myConfig";
@@ -12,17 +12,19 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { ScanLine, Keyboard, ShoppingCart, X, Receipt } from "lucide-react";
 import { api } from "@/lib/api";
+import { useReciptStore } from "@/store";
 
 export default function MainPage(): ReactNode {
   const navigate = useNavigate();
+  const { addEntry } = useReciptStore();
   const [productId, setProductId] = useState<string>("");
   const [searchId, setSearchId] = useState<number | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
-      if (e.key === "/" || e.key === "p") {
+      if (e.key === "p" || e.key === "P") {
         e.preventDefault();
-        const input = document.getElementById("product-scanner-input");
-        input?.focus();
+        inputRef.current?.focus();
       }
     };
 
@@ -35,7 +37,6 @@ export default function MainPage(): ReactNode {
       if (!searchId) return null;
       const res = await api.get(`${backendServer}/product/${searchId}`);
 
-      // Validate the response data
       if (res.status !== 200) {
         throw new Error("Product not found or invalid data");
       }
@@ -90,6 +91,7 @@ export default function MainPage(): ReactNode {
                   search();
                 }
               }}
+              ref={inputRef}
               className="pl-10 pr-32 text-base h-12"
               autoFocus
             />
@@ -128,7 +130,18 @@ export default function MainPage(): ReactNode {
               <X className="h-4 w-4 mr-2" />
               Cancel
             </Button>
-            <Button onClick={() => console.log("Add to receipt")}>
+            <Button
+              onClick={() => {
+                addEntry({
+                  productId: product.id,
+                  name: product.name,
+                  brand: product.brand,
+                  pricePerUnit: product.sellingPrice,
+                  quantity: 1,
+                });
+                navigate("/receipt/new");
+              }}
+            >
               <ShoppingCart className="h-4 w-4 mr-2" />
               Add to Receipt
             </Button>
@@ -142,9 +155,9 @@ export default function MainPage(): ReactNode {
           <Button
             variant="outline"
             onClick={() => navigate("/receipt/new")}
-            className="h-auto md:h-14"
+            className=" md:h-10"
           >
-            <Receipt className="h-4 w-4 mr-2" />
+            <Receipt className="h-4 w-4 mr-2 grow-0" />
             Start a Receipt
           </Button>
         </div>
