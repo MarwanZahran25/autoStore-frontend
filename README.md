@@ -54,7 +54,7 @@ npm run lint
 Create a `.env` file with:
 
 ```env
-VITE_BACKEND_SERVER="your-backend-server-url"
+VITE_BACKEND_SERVER="https://comparable-lorraine-marwanzahran25-756487f1.koyeb.app"
 VITE_PRINT_SERVER="http://localhost:3000"
 ```
 
