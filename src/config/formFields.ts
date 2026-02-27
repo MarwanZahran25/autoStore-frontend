@@ -1,10 +1,8 @@
-import type { FieldInputProps } from "./components/FieldInput";
+import type { FieldInputProps } from "@/components/FieldInput";
 
-export const backendServer =
-  "https://comparable-lorraine-marwanzahran25-756487f1.koyeb.app";
-type formFields = Omit<FieldInputProps, "control">;
+type FormField = Omit<FieldInputProps, "control">;
 
-export const fromFieldsArray: formFields[] = [
+export const productFormFields: FormField[] = [
   {
     name: "productId",
     placeholder: "enter the product ID (if it exists)",
@@ -42,7 +40,7 @@ export const fromFieldsArray: formFields[] = [
   },
 ];
 
-export const supplierInfofields: formFields[] = [
+export const supplierFormFields: FormField[] = [
   {
     name: "purchasePrice",
     placeholder: "How much did you buy this product for",
@@ -51,4 +49,3 @@ export const supplierInfofields: formFields[] = [
     type: "number",
   },
 ];
-export const printerServer = "http://localhost:3000";

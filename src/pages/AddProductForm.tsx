@@ -70,7 +70,7 @@ export default function AddProductForm(): ReactNode {
         });
       }
       toast.success(
-        `product : (${d.productName}) has been added to the Database Successfully`
+        `product : (${d.productName}) has been added to the Database Successfully`,
       );
       form.reset();
       if (d.toPrint) {

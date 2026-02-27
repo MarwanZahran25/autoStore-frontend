@@ -1,73 +1,84 @@
-# React + TypeScript + Vite
+# POS & Inventory Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern Point of Sale (POS) and Inventory Management System built with React, TypeScript, and Vite.
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This application enables product management, receipt generation, barcode scanning, and transaction tracking for retail businesses.
 
-## React Compiler
+## Technology Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+| Category | Technology |
+|----------|------------|
+| **Framework** | React 19 |
+| **Language** | TypeScript |
+| **Build Tool** | Vite 7 |
+| **Routing** | React Router 7 |
+| **State Management** | Zustand |
+| **Data Fetching** | TanStack Query |
+| **Form Handling** | React Hook Form |
+| **Validation** | Zod |
+| **HTTP Client** | Axios |
+| **UI Components** | Radix UI |
+| **Styling** | Tailwind CSS 4 |
+| **Icons** | Lucide React |
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Product Management** - Add, view, and manage products with details like name, brand, price, and stock
+- **Barcode Scanning** - Quick product lookup by ID with keyboard shortcut support
+- **Receipt Generation** - Create receipts with multiple products, quantities, and custom prices
+- **Income/Expense Tracking** - Record non-product transactions
+- **Transaction History** - View all transactions with timestamps
+- **Authentication** - JWT-based secure access
+- **Responsive Design** - Works on desktop and mobile devices
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Getting Started
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+```bash
+# Install dependencies
+npm install
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Run linter
+npm run lint
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Environment Variables
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Create a `.env` file with:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```env
+VITE_BACKEND_SERVER="your-backend-server-url"
+VITE_PRINT_SERVER="http://localhost:3000"
 ```
+
+## Project Structure
+
+```
+src/
+├── components/      # Reusable UI components
+│         # Base UI   ├── ui/ components
+│   └── ...         # Feature-specific components
+├── lib/            # Utilities and API
+├── pages/          # Page components
+├── store.ts        # State management
+└── App.tsx         # Main application
+```
+
+## API Endpoints
+
+- `POST /auth/login` - User authentication
+- `GET /product/:id` - Get product by ID
+- `POST /product/add` - Add new product
+- `POST /receipt/add` - Create new receipt
+- `POST /transaction/add` - Add transaction
+
+---
+
+Developed by Marwan Zahran

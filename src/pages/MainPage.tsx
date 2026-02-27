@@ -22,7 +22,7 @@ export default function MainPage(): ReactNode {
   const inputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
-      if (e.key === "p" || e.key === "P") {
+      if (e.key === "p" || e.key === "P" || e.key === "/") {
         e.preventDefault();
         inputRef.current?.focus();
       }
@@ -43,7 +43,7 @@ export default function MainPage(): ReactNode {
 
       return res.data;
     },
-    queryKey: [`product${searchId}`],
+    queryKey: ["product", searchId],
     enabled: searchId !== null,
     retry: false,
   });

@@ -12,12 +12,7 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 
 function ProductListSkeleton(): ReactNode {
@@ -91,11 +86,7 @@ export default function ProductsPage(): ReactNode {
   }
   return (
     <div className="max-w-[800px] mx-auto py-10">
-      {isPending ? (
-        <ProductListSkeleton />
-      ) : (
-        <ProductsDataTable data={data} />
-      )}
+      {isPending ? <ProductListSkeleton /> : <ProductsDataTable data={data} />}
     </div>
   );
 }
