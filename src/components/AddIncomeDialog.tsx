@@ -14,7 +14,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Plus } from "lucide-react";
 import { api } from "@/lib/api";
-import { backendServer } from "@/myConfig";
 import { toast } from "sonner";
 import { Datepicker } from "@/components/Datepicker";
 
@@ -41,7 +40,7 @@ export default function AddIncomeDialog(): ReactNode {
         pricePerUnit: data.amount,
         time: data.time,
       };
-      await api.post(`${backendServer}/transaction/add`, reqObj);
+      await api.post(`${import.meta.env.VITE_BACKEND_SERVER}/transaction/add`, reqObj);
       toast.success("income added sucssefuly");
       form.reset();
       setOpen(false);

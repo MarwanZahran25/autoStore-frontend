@@ -3,14 +3,13 @@ import { api } from "../lib/api";
 import { Loader2 } from "lucide-react";
 import { useAuthStore } from "../store";
 import { useQuery } from "@tanstack/react-query";
-import { backendServer } from "@/myConfig";
 
 export default function ProtectedRoute() {
   const { token, clearToken } = useAuthStore();
   const { data, isPending, error } = useQuery({
     queryFn: async () => {
       try {
-        const res = await api.get(`${backendServer}/auth/verify`);
+        const res = await api.get(`${import.meta.env.VITE_BACKEND_SERVER}/auth/verify`);
         return res.data;
       } catch (e) {
         clearToken();

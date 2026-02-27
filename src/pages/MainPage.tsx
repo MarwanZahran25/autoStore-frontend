@@ -1,7 +1,6 @@
 import { type ReactNode, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
-import { backendServer } from "@/myConfig";
 import { productDataAndpurchase } from "@/lib/schema";
 import ProductHeaderCard from "@/components/ProductHeaderCard";
 import AddExpenseDialog from "@/components/AddExpenseDialog";
@@ -35,7 +34,7 @@ export default function MainPage(): ReactNode {
   const { data, error } = useQuery({
     queryFn: async () => {
       if (!searchId) return null;
-      const res = await api.get(`${backendServer}/product/${searchId}`);
+      const res = await api.get(`${import.meta.env.VITE_BACKEND_SERVER}/product/${searchId}`);
 
       if (res.status !== 200) {
         throw new Error("Product not found or invalid data");

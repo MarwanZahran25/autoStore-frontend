@@ -15,7 +15,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Minus } from "lucide-react";
 
-import { backendServer } from "@/myConfig";
 import { toast } from "sonner";
 import { Datepicker } from "@/components/Datepicker";
 
@@ -42,7 +41,7 @@ export default function AddExpenseDialog(): ReactNode {
         pricePerUnit: parseInt(data.amount) * -1,
         time: data.time,
       };
-      await api.post(`${backendServer}/transaction/add`, reqObj);
+      await api.post(`${import.meta.env.VITE_BACKEND_SERVER}/transaction/add`, reqObj);
       toast.success("expense added sucssefuly");
       form.reset();
       setOpen(false);

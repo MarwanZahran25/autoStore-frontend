@@ -14,7 +14,6 @@ import FieldInput from "./FieldInput";
 import { purchaseSchema, brandAndSupplierSchema } from "@/lib/schema";
 import { useQuery } from "@tanstack/react-query";
 
-import { backendServer } from "@/myConfig";
 import { Button } from "./ui/button";
 import { Datepicker } from "./Datepicker";
 import { Field } from "./ui/field";
@@ -35,7 +34,7 @@ export default function PurchaseForm({ productId }: { productId: number }) {
   const { data, isPending } = useQuery({
     queryKey: ["suppliersAndBrands"],
     queryFn: async () => {
-      const res = await api.get(`${backendServer}/product/brandsInfo`);
+      const res = await api.get(`${import.meta.env.VITE_BACKEND_SERVER}/product/brandsInfo`);
       const parseRes = brandAndSupplierSchema.safeParse(res.data);
       if (parseRes.success) {
         return parseRes.data;
@@ -48,7 +47,7 @@ export default function PurchaseForm({ productId }: { productId: number }) {
   async function onSubmit(data: z.infer<typeof purchaseSchema>) {
     const newData = { ...data, productId };
     console.log(newData);
-    await api.post(`${backendServer}/qty/add`, { newData });
+    await api.post(`${import.meta.env.VITE_BACKEND_SERVER}/qty/add`, { newData });
   }
 
   return (

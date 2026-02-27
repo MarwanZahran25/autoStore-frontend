@@ -20,23 +20,17 @@ import { Spinner } from "@/components/ui/spinner";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  fromFieldsArray,
-  supplierInfofields,
-  printerServer,
-  backendServer,
-} from "../myConfig";
+import { productFormFields, supplierFormFields } from "@/config/formFields";
 import { Datepicker } from "@/components/Datepicker";
 import { Field } from "@/components/ui/field";
 
-const formFields = fromFieldsArray;
 type FormType = z.infer<typeof formSchema>;
 const newSupplierVal = -1;
 const newBrandVal = "new";
 export default function AddProductForm(): ReactNode {
   const [supplierFields, setSupplierFields] = useState(false);
   async function formSubmit(d: FormType) {
-    await api.post(`${backendServer}/product/add`, d);
+    await api.post(`${import.meta.env.VITE_BACKEND_SERVER}/product/add`, d);
     return d;
   }
   const queryClient = useQueryClient();
@@ -75,7 +69,7 @@ export default function AddProductForm(): ReactNode {
       form.reset();
       if (d.toPrint) {
         try {
-          await axios.post(`${printerServer}/print`, {
+          await axios.post(`${import.meta.env.VITE_PRINT_SERVER}/print`, {
             id: d.productId,
             price: d.sellingPrice,
             name: d.productName,
@@ -114,7 +108,7 @@ export default function AddProductForm(): ReactNode {
             onSubmit={form.handleSubmit(onSubmit)}
             id="add-product-form"
           >
-            {formFields.map((f) => {
+            {productFormFields.map((f) => {
               return (
                 <FieldInput
                   key={f.name}
@@ -178,7 +172,7 @@ export default function AddProductForm(): ReactNode {
                   placeholder="New supplier Name"
                 />
 
-                {supplierInfofields.map((f) => {
+                {supplierFormFields.map((f) => {
                   return (
                     <FieldInput
                       key={f.name}

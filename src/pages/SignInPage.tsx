@@ -7,7 +7,6 @@ import logo from "../assets/logo.webp";
 import { Field, FieldError, FieldLabel } from "../components/ui/field";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
-import { backendServer } from "../myConfig";
 import { useAuthStore } from "../store";
 
 export default function SignInPage() {
@@ -26,7 +25,7 @@ export default function SignInPage() {
     setError(false);
     setLoading(true);
     try {
-      const response = await api.post(`${backendServer}/auth/login`, {
+      const response = await api.post(`${import.meta.env.VITE_BACKEND_SERVER}/auth/login`, {
         password,
       });
       const { token } = response.data;
