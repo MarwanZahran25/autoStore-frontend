@@ -8,20 +8,20 @@ This application enables product management, receipt generation, barcode scannin
 
 ## Technology Stack
 
-| Category | Technology |
-|----------|------------|
-| **Framework** | React 19 |
-| **Language** | TypeScript |
-| **Build Tool** | Vite 7 |
-| **Routing** | React Router 7 |
-| **State Management** | Zustand |
-| **Data Fetching** | TanStack Query |
-| **Form Handling** | React Hook Form |
-| **Validation** | Zod |
-| **HTTP Client** | Axios |
-| **UI Components** | Radix UI |
-| **Styling** | Tailwind CSS 4 |
-| **Icons** | Lucide React |
+| Category             | Technology      |
+| -------------------- | --------------- |
+| **Framework**        | React 19        |
+| **Language**         | TypeScript      |
+| **Build Tool**       | Vite 7          |
+| **Routing**          | React Router 7  |
+| **State Management** | Zustand         |
+| **Data Fetching**    | TanStack Query  |
+| **Form Handling**    | React Hook Form |
+| **Validation**       | Zod             |
+| **HTTP Client**      | Axios           |
+| **UI Components**    | Radix UI        |
+| **Styling**          | Tailwind CSS 4  |
+| **Icons**            | Lucide React    |
 
 ## Features
 
@@ -54,8 +54,8 @@ npm run lint
 Create a `.env` file with:
 
 ```env
-VITE_BACKEND_SERVER="https://comparable-lorraine-marwanzahran25-756487f1.koyeb.app"
-VITE_PRINT_SERVER="http://localhost:3000"
+VITE_BACKEND_SERVER="your-backend-server"
+VITE_PRINT_SERVER="your-print-server"
 ```
 
 ## Project Structure
