@@ -32,12 +32,12 @@ function ProductPageSkeleton(): ReactNode {
 
 export default function ProductPage(): ReactNode {
   const { id } = useParams();
-  const { data, isPending, error } = useQuery({
+  const { data, isPending } = useQuery({
     queryFn: async () => {
       const res = await api.get(`/product/${id}`);
       return res.data;
     },
-
+    staleTime: 5 * 60 * 100,
     queryKey: [`product${id}`],
   });
   if (isPending) {
@@ -107,7 +107,6 @@ export default function ProductPage(): ReactNode {
       </div>
     );
   } else {
-    console.log(error);
     return <div>Error</div>;
   }
 }
