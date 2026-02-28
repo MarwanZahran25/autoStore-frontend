@@ -10,6 +10,26 @@ import { productDataAndpurchase } from "@/lib/schema";
 import PurchaseTable from "@/components/ProductPurchaseTable";
 import ProductHeaderCard from "@/components/ProductHeaderCard";
 
+function ProductPageSkeleton(): ReactNode {
+  return (
+    <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 p-6 text-sm lg:text-lg w-full">
+      <div className="max-w-6xl mx-auto space-y-5">
+        {/* Header Card Skeleton */}
+        <div className="bg-gray-200 animate-pulse rounded-xl h-32"></div>
+
+        {/* Current Stock Card Skeleton */}
+        <div className="bg-gray-200 animate-pulse rounded-xl h-48"></div>
+
+        {/* Purchase Table Skeleton */}
+        <div className="bg-gray-200 animate-pulse rounded-xl h-64"></div>
+
+        {/* Purchase Form Skeleton */}
+        <div className="bg-gray-200 animate-pulse rounded-xl h-40"></div>
+      </div>
+    </div>
+  );
+}
+
 export default function ProductPage(): ReactNode {
   const { id } = useParams();
   const { data, isPending, error } = useQuery({
@@ -20,6 +40,10 @@ export default function ProductPage(): ReactNode {
 
     queryKey: [`product${id}`],
   });
+  if (isPending) {
+    return <ProductPageSkeleton />;
+  }
+
   const parsingresult = productDataAndpurchase.safeParse(data);
   if (parsingresult.success) {
     const product = parsingresult.data.productInfo;
@@ -28,7 +52,6 @@ export default function ProductPage(): ReactNode {
 
     return (
       <div>
-        {isPending && <div>loading...</div>}
         {data && (
           <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 p-6 text-sm lg:text-lg wrap wrap-normal w-full ">
             <div className="max-w-6xl mx-auto space-y-5">
