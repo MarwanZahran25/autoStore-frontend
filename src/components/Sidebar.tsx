@@ -92,9 +92,8 @@ export function Sidebar() {
         </SheetTrigger>
         <SheetContent side="left" className="w-64 p-0">
           <div className="flex h-full flex-col">
-            <div className="p-6 border-b flex justify-center h-100">
-              hi
-              {<img src={logo} alt="Logo" className="h-16 w-auto" />}
+            <div className="p-6 border-b flex justify-center">
+              {<img src={logo} alt="Logo" className="h-16 w-auto rounded-md" />}
             </div>
             <ScrollArea className="flex-1 pb-8">
               <nav className="flex flex-col gap-1 p-2">
