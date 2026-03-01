@@ -12,13 +12,14 @@ import {
 import SelectField from "./SelectField";
 import FieldInput from "./FieldInput";
 import { purchaseSchema, brandAndSupplierSchema } from "@/lib/schema";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { Button } from "./ui/button";
 import { Datepicker } from "./Datepicker";
 import { Field } from "./ui/field";
 import { api } from "@/lib/api";
 export default function PurchaseForm({ productId }: { productId: number }) {
+  const queryClient = useQueryClient();
   const form = useForm<z.infer<typeof purchaseSchema>>({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     resolver: zodResolver(purchaseSchema) as any,
@@ -48,6 +49,7 @@ export default function PurchaseForm({ productId }: { productId: number }) {
     const newData = { ...data, productId };
     console.log(newData);
     await api.post(`${import.meta.env.VITE_BACKEND_SERVER}/qty/add`, { newData });
+    queryClient.invalidateQueries({ queryKey: ["product", productId] });
   }
 
   return (

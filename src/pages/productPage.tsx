@@ -38,7 +38,8 @@ export default function ProductPage(): ReactNode {
       return res.data;
     },
     staleTime: 5 * 60 * 100,
-    queryKey: [`product${id}`],
+    queryKey: ["product", id],
+    retry: false,
   });
   if (isPending) {
     return <ProductPageSkeleton />;
@@ -57,6 +58,18 @@ export default function ProductPage(): ReactNode {
             <div className="max-w-6xl mx-auto space-y-5">
               {/* Header Card */}
               <ProductHeaderCard product={product}></ProductHeaderCard>
+
+              {/* Product Description Card */}
+              {product.description && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg">Description</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-slate-700">{product.description}</p>
+                  </CardContent>
+                </Card>
+              )}
 
               <div className="max-w-6xl mx-auto space-y-6">
                 {/* Current Stock Overview */}
