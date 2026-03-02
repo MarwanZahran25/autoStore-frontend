@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-type TransactionSchema = {
+export type TransactionSchema = {
   receiptId?: number | undefined;
   productId?: number | undefined;
   pricePerUnit?: number | undefined;
