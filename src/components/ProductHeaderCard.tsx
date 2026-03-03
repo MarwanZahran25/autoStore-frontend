@@ -54,7 +54,7 @@ export default function ProductHeaderCard({
               Selling Price
             </div>
             <div className="lg:text-3xl font-bold text-slate-900">
-              QAR {product.sellingPrice.toFixed(2)}
+              QAR {product.sellingPrice}
             </div>
           </div>
         </div>

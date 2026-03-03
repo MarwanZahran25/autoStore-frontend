@@ -119,7 +119,7 @@ export function TransactionsDataTable({ data }: TransactionsDataTableProps) {
       data={data}
       Description="List of all transactions"
       title="Transactions"
-      input={true}
+      input={false}
     />
   );
 }

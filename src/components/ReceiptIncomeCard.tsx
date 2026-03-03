@@ -24,7 +24,7 @@ export default function ReceiptIncomeCard({
             </div>
           </div>
           <div className="font-semibold text-green-700">
-            +QAR {amount.toFixed(2)}
+            +QAR {amount}
           </div>
         </div>
       </CardContent>

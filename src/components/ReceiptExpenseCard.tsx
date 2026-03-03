@@ -24,7 +24,7 @@ export default function ReceiptExpenseCard({
             </div>
           </div>
           <div className="font-semibold text-red-700">
-            -QAR {amount.toFixed(2)}
+            -QAR {amount}
           </div>
         </div>
       </CardContent>

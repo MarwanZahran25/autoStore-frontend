@@ -17,7 +17,7 @@ export default function ReceiptTotal({ products }: ReceiptTotalProps) {
     <div className="border-t pt-4">
       <div className="flex items-center justify-between text-xl font-bold">
         <span>Total:</span>
-        <span>QAR {total.toFixed(2)}</span>
+        <span>QAR {total}</span>
       </div>
     </div>
   );

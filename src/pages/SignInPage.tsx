@@ -25,9 +25,12 @@ export default function SignInPage() {
     setError(false);
     setLoading(true);
     try {
-      const response = await api.post(`${import.meta.env.VITE_BACKEND_SERVER}/auth/login`, {
-        password,
-      });
+      const response = await api.post(
+        `${import.meta.env.VITE_BACKEND_SERVER}/auth/login`,
+        {
+          password,
+        },
+      );
       const { token } = response.data;
       setToken(token);
       toast.success("Signed in successfully");
@@ -76,6 +79,9 @@ export default function SignInPage() {
               "Sign In"
             )}
           </Button>
+          <p className="text-center text-sm text-red-400">
+            To see a demo use the password "DEMO"
+          </p>
         </form>
       </div>
     </div>

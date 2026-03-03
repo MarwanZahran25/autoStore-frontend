@@ -20,7 +20,11 @@ export default function ReceiptPage(): ReactNode {
   const [searchKey, setSearchKey] = useState("");
   const { products, addEntry, resetRecipt } = useReciptStore();
 
-  const { data: currentProduct, isLoading, error } = useQuery<Product>({
+  const {
+    data: currentProduct,
+    isLoading,
+    error,
+  } = useQuery<Product>({
     queryKey: ["product", searchKey],
     queryFn: async () => {
       const response = await api.get(`/product/${searchKey}`);
@@ -34,7 +38,7 @@ export default function ReceiptPage(): ReactNode {
   const handleAddProduct = (
     productId: number,
     quantity: number,
-    sellingPrice: number
+    sellingPrice: number,
   ) => {
     if (!currentProduct) return;
 
