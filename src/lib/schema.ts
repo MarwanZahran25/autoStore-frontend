@@ -94,3 +94,8 @@ export const purchaseSchema = z.object({
   newSupplier: z.string().optional(),
   purchaseDate: z.coerce.date().or(z.literal("")).optional(),
 });
+export const receiptRes = z.object({
+  id: z.number(),
+  total: z.number(),
+  issuedAt: z.string(),
+});

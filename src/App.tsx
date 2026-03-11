@@ -7,6 +7,7 @@ import ProudctsList from "./pages/productsList";
 import ProductPage from "./pages/productPage";
 import MainPage from "./pages/MainPage";
 import ReceiptsPage from "./pages/ReceiptPage";
+import AllReceiptsPage from "./pages/AllReceiptsPage";
 import TransactionsPage from "./pages/TransactionsPage";
 import SignInPage from "./pages/SignInPage";
 import { Toaster } from "sonner";
@@ -27,7 +28,11 @@ export default function App() {
             <Route path="product/:id" element={<ProductPage />} />
 
             <Route path="transactions/all" element={<TransactionsPage />} />
-            <Route path="receipt/new" element={<ReceiptsPage />} />
+            <Route path="receipts">
+              <Route index element={<AllReceiptsPage />} />
+              <Route path="all" element={<AllReceiptsPage />} />
+              <Route path="new" element={<ReceiptsPage />} />
+            </Route>
           </Route>
         </Route>
       </Routes>
