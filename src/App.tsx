@@ -8,6 +8,7 @@ import ProductPage from "./pages/productPage";
 import MainPage from "./pages/MainPage";
 import ReceiptsPage from "./pages/ReceiptPage";
 import AllReceiptsPage from "./pages/AllReceiptsPage";
+import ReceiptDetailPage from "./pages/ReceiptDetailPage";
 import TransactionsPage from "./pages/TransactionsPage";
 import SignInPage from "./pages/SignInPage";
 import { Toaster } from "sonner";
@@ -33,6 +34,7 @@ export default function App() {
               <Route path="all" element={<AllReceiptsPage />} />
               <Route path="new" element={<ReceiptsPage />} />
             </Route>
+            <Route path="receipt/:id" element={<ReceiptDetailPage />} />
           </Route>
         </Route>
       </Routes>

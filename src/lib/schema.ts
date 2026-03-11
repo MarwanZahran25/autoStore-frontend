@@ -99,3 +99,7 @@ export const receiptRes = z.object({
   total: z.number(),
   issuedAt: z.string(),
 });
+
+export const fullReceiptRes = receiptRes.extend({
+  transactions: z.array(transactionRes),
+});

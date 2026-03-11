@@ -1,5 +1,6 @@
 import { type ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "./datatable";
+import { Link } from "react-router";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown } from "lucide-react";
 import { receiptRes } from "@/lib/schema";
@@ -12,9 +13,12 @@ const columns: ColumnDef<receipt>[] = [
     accessorKey: "id",
     header: () => <div className="hidden lg:block max-w-[80px]">ID</div>,
     cell: ({ row }) => {
+      const id: number = row.getValue("id");
       return (
         <div className="font-medium hidden lg:block text-left">
-          {row.getValue("id")}
+          <Link to={`/receipt/${id}`} className="hover:underline text-blue-600">
+            {id}
+          </Link>
         </div>
       );
     },
