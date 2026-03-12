@@ -77,17 +77,8 @@ const columns: ColumnDef<transaction>[] = [
   },
   {
     accessorKey: "quantity",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="justify-start text-left"
-        >
-          Quantity
-          <ArrowUpDown className="ml-2 h-2 w-2" />
-        </Button>
-      );
+    header: () => {
+      return <div className="justify-start text-left">Quantity</div>;
     },
     cell: ({ row }) => {
       return (

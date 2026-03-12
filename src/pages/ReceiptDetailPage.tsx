@@ -84,7 +84,9 @@ export default function ReceiptDetailPage(): ReactNode {
                 <CardTitle className="text-base">Receipt ID</CardTitle>
               </CardHeader>
               <CardContent className="pt-1 pb-2 px-4">
-                <p className="text-lg font-semibold text-muted-foreground">{data.id}</p>
+                <p className="text-lg font-semibold text-muted-foreground">
+                  {data.id}
+                </p>
               </CardContent>
             </Card>
             <Card className="py-2">
@@ -92,16 +94,18 @@ export default function ReceiptDetailPage(): ReactNode {
                 <CardTitle className="text-base">Total</CardTitle>
               </CardHeader>
               <CardContent className="pt-1 pb-2 px-4">
-                <p className={`text-lg font-semibold ${
-                  data.total < 0 ? "text-red-500" : "text-green-600"
-                }`}>
+                <p
+                  className={`text-lg font-semibold ${
+                    data.total < 0 ? "text-red-500" : "text-green-600"
+                  }`}
+                >
                   {data.total < 0 ? data.total : `+${data.total}`}
                 </p>
               </CardContent>
             </Card>
             <Card className="py-2">
               <CardHeader className="pb-0 pt-1 px-4">
-                <CardTitle className="text-base">Issued At</CardTitle>
+                <CardTitle className="text-base">Date</CardTitle>
               </CardHeader>
               <CardContent className="pt-1 pb-2 px-4">
                 <p className="text-lg font-semibold text-muted-foreground">
