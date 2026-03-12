@@ -55,10 +55,10 @@ export default function ReceiptPage(): ReactNode {
   };
 
   const handleCheckout = async () => {
-    const res = await api.post("/receipt/add", {
+    await api.post("/receipt/add", {
       transactions: products,
     });
-    console.log(res.data);
+
     resetRecipt();
   };
 

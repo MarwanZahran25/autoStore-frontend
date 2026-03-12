@@ -11,14 +11,12 @@ type receipt = z.infer<typeof receiptRes>;
 const columns: ColumnDef<receipt>[] = [
   {
     accessorKey: "id",
-    header: () => <div className="hidden lg:block max-w-[80px]">ID</div>,
+    header: () => <div>ID</div>,
     cell: ({ row }) => {
       const id: number = row.getValue("id");
       return (
-        <div className="font-medium hidden lg:block text-left">
-          <Link to={`/receipt/${id}`} className="hover:underline text-blue-600">
-            {id}
-          </Link>
+        <div className="font-medium  text-left">
+          <Link to={`/receipt/${id}`}>{id}</Link>
         </div>
       );
     },
