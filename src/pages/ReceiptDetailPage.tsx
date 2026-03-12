@@ -118,7 +118,10 @@ export default function ReceiptDetailPage(): ReactNode {
           {/* Transactions Table */}
           <div>
             <h3 className="text-lg font-semibold mb-4">Transactions</h3>
-            <TransactionsDataTable data={data.transactions} />
+            <TransactionsDataTable
+              data={data.transactions}
+              altDescription="List of transactions in this receipt"
+            />
           </div>
         </CardContent>
       </Card>

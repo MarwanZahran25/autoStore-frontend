@@ -83,7 +83,7 @@ const columns: ColumnDef<transaction>[] = [
     cell: ({ row }) => {
       return (
         <div className="font-medium w-12 text-center">
-          {row.getValue("quantity")}
+          {row.getValue("quantity") || "-"}
         </div>
       );
     },
@@ -101,14 +101,18 @@ const columns: ColumnDef<transaction>[] = [
 
 interface TransactionsDataTableProps {
   data: transaction[];
+  altDescription?: string;
 }
 
-export function TransactionsDataTable({ data }: TransactionsDataTableProps) {
+export function TransactionsDataTable({
+  data,
+  altDescription,
+}: TransactionsDataTableProps) {
   return (
     <DataTable
       columns={columns}
       data={data}
-      Description="List of all transactions"
+      Description={altDescription || "List of all transactions"}
       title="Transactions"
       input={false}
     />
