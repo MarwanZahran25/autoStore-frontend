@@ -34,7 +34,9 @@ export default function MainPage(): ReactNode {
   const { data, error } = useQuery({
     queryFn: async () => {
       if (!searchId) return null;
-      const res = await api.get(`${import.meta.env.VITE_BACKEND_SERVER}/product/${searchId}`);
+      const res = await api.get(
+        `${import.meta.env.VITE_BACKEND_SERVER}/product/${searchId}`,
+      );
 
       if (res.status !== 200) {
         throw new Error("Product not found or invalid data");
@@ -138,7 +140,7 @@ export default function MainPage(): ReactNode {
                   pricePerUnit: product.sellingPrice,
                   quantity: 1,
                 });
-                navigate("/receipt/new");
+                navigate("/receipts/new");
               }}
             >
               <ShoppingCart className="h-4 w-4 mr-2" />
@@ -153,7 +155,7 @@ export default function MainPage(): ReactNode {
           <AddExpenseDialog />
           <Button
             variant="outline"
-            onClick={() => navigate("/receipt/new")}
+            onClick={() => navigate("/receipts/new")}
             className=" md:h-10"
           >
             <Receipt className="h-4 w-4 mr-2 grow-0" />
