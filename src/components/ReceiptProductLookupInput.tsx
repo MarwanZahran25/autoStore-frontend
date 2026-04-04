@@ -21,20 +21,22 @@ export default function ProductLookupInput({
         placeholder="Scan or enter product ID"
         className="pl-10 pr-32 h-12"
         value={productId}
-        onChange={(e) => onProductIdChange(e.target.value)}
+        onChange={(e) => {
+          onProductIdChange(e.target.value);
+        }}
         onKeyDown={(e) => {
+          if (e.key === "p" || e.key === "P") {
+            e.preventDefault();
+            return;
+          }
           if (e.key === "Enter") {
             onFetch();
           }
         }}
+        autoFocus={true}
       />
       <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
-        <Button
-          size="sm"
-          variant="outline"
-          onClick={onFetch}
-          className="h-8"
-        >
+        <Button size="sm" variant="outline" onClick={onFetch} className="h-8">
           <Keyboard className="h-4 w-4 mr-1" />
           Enter
         </Button>

@@ -30,8 +30,8 @@ const newBrandVal = "new";
 export default function AddProductForm(): ReactNode {
   const [supplierFields, setSupplierFields] = useState(false);
   async function formSubmit(d: FormType) {
-    await api.post(`${import.meta.env.VITE_BACKEND_SERVER}/product/add`, d);
-    return d;
+    const response = await api.post(`${import.meta.env.VITE_BACKEND_SERVER}/product/add`, d);
+    return response.data;
   }
   const queryClient = useQueryClient();
   const form = useForm<FormType>({
@@ -57,7 +57,8 @@ export default function AddProductForm(): ReactNode {
 
   const mutation = useMutation({
     mutationFn: formSubmit,
-    onSuccess: async (d: FormType) => {
+    onSuccess: async (responseData: { productId: number }) => {
+      const d = form.getValues();
       if (d.brand === newBrandVal || d.supplierID == newSupplierVal) {
         await queryClient.invalidateQueries({
           queryKey: ["suppliersAndBrands", "products"],
@@ -70,9 +71,10 @@ export default function AddProductForm(): ReactNode {
       if (d.toPrint) {
         try {
           await axios.post(`${import.meta.env.VITE_PRINT_SERVER}/print`, {
-            id: d.productId,
+            id: responseData.productId,
             price: d.sellingPrice,
             name: d.productName,
+            numberOfCopies: d.copies,
           });
           toast.success(`${d.copies} copy sent to the printer`);
         } catch {
