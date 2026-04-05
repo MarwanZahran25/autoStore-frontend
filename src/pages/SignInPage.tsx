@@ -26,7 +26,7 @@ export default function SignInPage() {
     setLoading(true);
     try {
       const response = await api.post(
-        `${import.meta.env.VITE_BACKEND_SERVER}/auth/login`,
+        `/auth/login`,
         {
           password,
         },
