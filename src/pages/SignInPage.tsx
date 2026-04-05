@@ -38,6 +38,7 @@ export default function SignInPage() {
     } catch {
       toast.error("Sign in failed. Please check your password.");
     } finally {
+      console.log(import.meta.env.VITE_BACKEND_SERVER)
       setLoading(false);
     }
   };
