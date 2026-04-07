@@ -72,18 +72,33 @@ export function DataTable<TData, TValue>({
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         <CardDescription>{Description}</CardDescription>
-        <div className="flex items-center py-2">
+        <div className="flex items-center gap-2 py-2">
           {input && (
-            <Input
-              placeholder="Filter by product name"
-              value={
-                (table.getColumn("name")?.getFilterValue() as string) ?? ""
-              }
-              onChange={(event) =>
-                table.getColumn("name")?.setFilterValue(event.target.value)
-              }
-              className="max-w-sm"
-            />
+            <>
+              <Input
+                placeholder="Filter by product name"
+                value={
+                  (table.getColumn("name")?.getFilterValue() as string) ?? ""
+                }
+                onChange={(event) =>
+                  table.getColumn("name")?.setFilterValue(event.target.value)
+                }
+                className="max-w-sm"
+              />
+              <Input
+                placeholder="Filter by product ID"
+                value={(table.getColumn("id")?.getFilterValue() as string) ?? ""}
+                onChange={(event) =>
+                  table.getColumn("id")?.setFilterValue(event.target.value)
+                }
+                onKeyDown={(event) => {
+                  if (event.key === "p" || event.key === "P") {
+                    event.preventDefault();
+                  }
+                }}
+                className="max-w-sm"
+              />
+            </>
           )}
         </div>
       </CardHeader>

@@ -14,6 +14,12 @@ type product = {
 const columns: ColumnDef<product>[] = [
   {
     accessorKey: "id",
+    filterFn: (row, columnId, filterValue) => {
+      const idValue = row.getValue<number>(columnId);
+      return idValue
+        .toString()
+        .includes((filterValue ?? "").toString().trim());
+    },
     header: () => <div className=" hidden lg:block">ID</div>,
     cell: ({ row }) => {
       return (
